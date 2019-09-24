@@ -8,10 +8,21 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
-    // declare an intent
+    // declare an intent to start new activities
     Intent intent;
+
+    // declare a database hanlder
+    DBHandler dbHandler;
+
+    // declare a Shopping Lists Cursor Adapter
+    ShoppingLists shoppingListsAdpter;
+
+    // declare a ListView
+    ListView shopperListView;
     /**
      * This method initializes the Action bar and the view of the
      * Main activity
@@ -26,13 +37,38 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // initialize the database handler
+        dbHandler= new DBHandler(this,null);
+        // initialize the list view
+        shopperListView=(ListView) findViewById(R.id.shopperListView);
+
+        // initialize the shopping list Cursor adapter
+        shoppingListsAdpter = new ShoppingLists(this, dbHandler.getShoppingLists(), 0);
+
+        // set  shopping list Cursor adapter on ListView
+        shopperListView.setAdapter(shoppingListsAdpter);
+
+        // set OnItemClickListener to shopper ListView
+        shopperListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                // launching The View List Activity and sending it the if of the
+                // shopping list
+
+                intent = new Intent(MainActivity.this, ViewList.class);
+                intent.putExtra("_id", id);
+                startActivity(intent);
+
+            }
+        });
+
 
     }
 
 
     /**
      * This method further initializes the Action bar of the Main activity. I
-     * It gets the code we wrote in theh menu  main and incorporates into the Action Bar
+     * It gets the code we wrote in the menu  main and incorporates into the Action Bar
      * @param menu
      * @return
      */
@@ -80,4 +116,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
+
 }
