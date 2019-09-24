@@ -74,7 +74,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         String dbString="";
     // create SDL String that will get the shopping list name
-        String query="SELECT + FROM " + TABLE_SHOPPING_LIST+
+        String query="SELECT * FROM " + TABLE_SHOPPING_LIST+
                 " WHERE " + COLUMN_LIST_ID + " = " + id;
     // execute the select statement and store result in a cursor
         Cursor cursor= db.rawQuery(query, null);
